@@ -10,8 +10,7 @@ export default {
 </script>
 
 <template>
-  <div class="h-100px w-full">
-  <p>првиет мир</p>
+  <div class="h-100vh w-full">
   <header-c></header-c>
   </div>
 </template>
