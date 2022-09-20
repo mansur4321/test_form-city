@@ -67,15 +67,18 @@ export default {
                 dataCities: [
                     {
                         id: 1,
-                        name: "Москва"
+                        name: "Москва",
+                        selected: null
                     },
                     {
                         id: 2,
-                        name: "Санкт-Петербург"
+                        name: "Санкт-Петербург",
+                        selected: null
                     },
                     {
                         id: 3,
-                        name: "Казань"
+                        name: "Казань",
+                        selected: null
                     }
                 ]
             }
