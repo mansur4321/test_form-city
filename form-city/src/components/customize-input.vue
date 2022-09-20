@@ -15,6 +15,7 @@
             v-for="dataCity of dataCities"
             :key="dataCity.id"
             :value="dataCity.id"
+            :ref="'id-' + dataCity.id"
         >
             {{dataCity.name}}
         </option>
@@ -35,14 +36,35 @@ export default {
             default: null,
         },
         dataCities: {
-            type: Object,
+            type: Array,
             default: null,
         }
     },
 
     data() {
         return {
-            showSelect: false
+            showSelect: false,
+        }
+    },
+
+    computed: {
+        selectedId() {
+            this.setSelectedId(this.$store.state.cityId);
+            return this.$store.state.cityId;
+        }
+    },
+
+    methods: {
+        setSelectedId(id) {
+            let option = this.$refs[`id-${id}`][0];
+            console.log(option)
+
+            for (let i = 1; i < 4; i++) {
+                let opt = this.$refs[`id-${i}`][0];
+                opt.removeAttribute('selected');
+            }
+            option.setAttribute('selected', 'true');
+            console.log( option.getAttribute('selected'));
         }
     },
 
