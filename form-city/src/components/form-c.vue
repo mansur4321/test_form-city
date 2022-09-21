@@ -1,5 +1,5 @@
 <template>
-    <form action="#" class="bg-white rounded-lg smX:w-[355px] smX:px-5 smX:pt-[24px] smX:pb-[22px] smB:px-6 smB:w-auto smB:pb-[27px]">
+    <form action="#" novalidate class="bg-white rounded-lg smX:w-[355px] smX:px-5 smX:pt-[24px] smX:pb-[22px] smB:px-6 smB:w-auto smB:pb-[27px]">
         <h2 class="smX:mb-[36px] smB:mb-[29px] mdB:mb-6">
             <span class="text-[#111827] text-[24px] leading-6 font-medium">Заказать звонок</span>
         </h2>
@@ -12,6 +12,8 @@
                     :title="input.title"
                     :placeholder="input.placeholder"
                     :type="input.type"
+                    :submitCheck="submiteCheck"
+                    @checkValidateInput="checkValidateInputs"
                 ></customize-input>
             </div>
 
@@ -21,9 +23,13 @@
                     :title="selectDataInput.title"
                     :type="selectDataInput.type"
                     :dataCities="selectDataInput.dataCities"
+                    :submitCheck="submiteCheck"
+                    @checkValidateInput="checkValidateInputs"
                 ></customize-input>
 
-                <submitBtn></submitBtn>
+                <submitBtn
+                    @submitForm="submitForm"
+                ></submitBtn>
             </div>  
         </div>
 </form>
@@ -41,6 +47,12 @@ export default {
 
     data() {
         return {
+            submiteCheck: false,
+
+            formData: {
+                
+            },
+
             inputsData: [
                 {
                     title: 'Имя',
@@ -81,6 +93,41 @@ export default {
                         selected: null
                     }
                 ]
+            }
+        }
+    },
+
+    watch: {
+        formData: {
+            handler() {
+                if (Object.keys(this.formData).length === 4) {
+                    alert('данные отправлены!');
+                }
+            },
+            deep: true,
+            immediate: false,
+        }
+    },
+
+    methods: {
+        submitForm() {
+            this.submiteCheck = true;
+        },
+
+        checkValidateInputs(dataInput) {
+            switch(dataInput.type){
+                case 'email':
+                    this.formData.email = dataInput.value;
+                    break;
+                case 'text':
+                    this.formData.name = dataInput.value;
+                    break;
+                case 'tel':
+                    this.formData.phone = dataInput.value;
+                    break;
+                case 'select':
+                    this.formData.city_id = dataInput.value;
+                    break;
             }
         }
     }
