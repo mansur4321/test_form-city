@@ -1,5 +1,5 @@
 <template>
-    <form action="#" novalidate class="bg-white rounded-lg smX:w-[355px] smX:px-5 smX:pt-[24px] smX:pb-[22px] smB:px-6 smB:w-auto smB:pb-[27px]">
+    <form action="#" ref="formD" novalidate class="bg-white rounded-lg smX:w-[355px] smX:px-5 smX:pt-[24px] smX:pb-[22px] smB:px-6 smB:w-auto smB:pb-[27px]">
         <h2 class="smX:mb-[36px] smB:mb-[29px] mdB:mb-6">
             <span class="text-[#111827] text-[24px] leading-6 font-medium">Заказать звонок</span>
         </h2>
@@ -38,6 +38,8 @@
 <script>
 import customizeInput from './customize-input.vue';
 import submitBtn from './submit-btn.vue';
+
+import axios from 'axios';
 
 export default {
     components: {
@@ -99,9 +101,28 @@ export default {
 
     watch: {
         formData: {
-            handler() {
+            async handler() {
                 if (Object.keys(this.formData).length === 4) {
-                    alert('данные отправлены!');
+                    let form = new FormData(this.$refs.formD);
+                    let message;
+
+                    form.set('name', this.formData.name);
+                    form.set('email', this.formData.email);
+                    form.set('phone', this.formData.phone);
+                    form.set('city_id', this.formData.city_id);
+
+                    await axios.post('http://hh.autodrive-agency.ru/test-tasks/front/task-7/', {
+                        body: form,
+                    }).then(resp => {
+                        message = resp;
+                    }).catch(error => {
+                        message = error.message
+                    });
+
+                    
+                    this.$store.commit('gettingMessageOfResp', message);
+
+                    this.$emit('closeFormPopup');
                 }
             },
             deep: true,
@@ -111,7 +132,12 @@ export default {
 
     methods: {
         submitForm() {
+            function closeCheck() {
+                this.submiteCheck = false;
+            }
+
             this.submiteCheck = true;
+            setTimeout(closeCheck.bind(this), 1);
         },
 
         checkValidateInputs(dataInput) {
@@ -123,7 +149,7 @@ export default {
                     this.formData.name = dataInput.value;
                     break;
                 case 'tel':
-                    this.formData.phone = dataInput.value;
+                    this.formData.phone = dataInput.value.split('').filter(item => item !== '(' && item !== ')' && item !== '-' && item !== ' ').join('');
                     break;
                 case 'select':
                     this.formData.city_id = dataInput.value;
