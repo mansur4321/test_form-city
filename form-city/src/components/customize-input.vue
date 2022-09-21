@@ -138,16 +138,18 @@ export default {
             
             if(re.test(this.inputValue)) {
                 this.correctValidate(false);
+                this.errorValidate(true);
             } else {
-                this.errorValidate();
+                this.errorValidate(false);
             }
         },
 
         phoneValidation() {
             if(this.inputValue.length === 17) {
                 this.correctValidate(false);
+                this.errorValidate(true);
             } else {
-                this.errorValidate();
+                this.errorValidate(false);
             }
         },
 
@@ -156,16 +158,18 @@ export default {
 
             if (this.inputValue.length > 0 && !re.test(this.inputValue)) {
                 this.correctValidate(false);
+                this.errorValidate(true);
             } else {
-                this.errorValidate();
+                this.errorValidate(false);
             }
         },
 
         selectValidation() {
             if (this.$refs.select.value) {
                 this.correctValidate(this.$refs.select.value);
+                this.errorValidate(true);
             } else {
-                this.errorValidate();
+                this.errorValidate(false);
             }
         }
     },
